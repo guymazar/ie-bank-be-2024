@@ -2,6 +2,8 @@ from flask import Flask, request
 from iebank_api import db, app
 from iebank_api.models import Account
 
+
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
@@ -27,6 +29,8 @@ def create_account():
     name = request.json['name']
     currency = request.json['currency']
     country = request.json['country']
+    if any(char.isdigit() for char in country):
+        return {'error': 'Invalid country: Country name should not contain numbers'}, 400
     account = Account(name, currency, country)
     db.session.add(account)
     db.session.commit()
@@ -67,3 +71,4 @@ def format_account(account):
         'status': account.status,
         'created_at': account.created_at
     }
+

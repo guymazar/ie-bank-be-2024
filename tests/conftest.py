@@ -2,7 +2,11 @@ import pytest
 from iebank_api.models import Account
 from iebank_api import db, app
 
-
+@pytest.fixture(scope='module')
+def testing_client():
+    # Configure the app to use a test SQLite database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_ie_bank.db'
+    app.config['TESTING'] = True
 
 @pytest.fixture
 def testing_client(scope='module'):

@@ -15,7 +15,7 @@ elif os.getenv('ENV') == 'dev':
     print("Running in development mode")
     app.config.from_object('config.DevelopmentConfig')
 elif os.getenv('ENV') == 'ghci':
-    print("Running in github mode")
+    print("Running in github CI mode")
     app.config.from_object('config.GithubCIConfig')
 
 db = SQLAlchemy(app)
