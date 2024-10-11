@@ -11,7 +11,9 @@ permissions:
   id-token: write
 
 env:
-  BACKEND_WEBAPP_DEV: aguadamillas-be-dev
+  BACKEND_WEBAPP_DEV: gmazar-be-dev
+  BACKEND_WEBAPP_UAT: gmazar-be-dev
+
 
 jobs:
   build:
@@ -49,9 +51,9 @@ jobs:
         path: |
           . 
 
-  deploy:
+  deploy-DEV:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build 
     environment:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -72,5 +74,30 @@ jobs:
       id: deploy-to-webapp
       with:
         app-name: ${{ env.BACKEND_WEBAPP_DEV }}
+        package: .
+
+  deploy-UAT:
+    runs-on: ubuntu-latest
+    needs: [build, deploy-DEV] 
+    environment:
+      name: 'Development'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v4
+      with:
+        name: python-app
+        path: .
+    
+    - uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: 'Deploy to Azure Web App'
+      uses: azure/webapps-deploy@v3
+      id: deploy-to-webapp
+      with:
+        app-name: ${{ env.BACKEND_WEBAPP_UAT }}
         package: .
     
