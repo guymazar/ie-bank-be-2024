@@ -12,7 +12,7 @@ permissions:
 
 env:
   BACKEND_WEBAPP_DEV: gmazar-be-dev
-  BACKEND_WEBAPP_UAT: gmazar-be-dev
+  BACKEND_WEBAPP_UAT: gmazar-be-uat
 
 
 jobs:
