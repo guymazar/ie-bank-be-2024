@@ -80,7 +80,7 @@ jobs:
   deploy-UAT:
     if: github.event.pull_request.base.ref == 'main' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    needs: [build, deploy-DEV] 
+    needs: build
     environment:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
